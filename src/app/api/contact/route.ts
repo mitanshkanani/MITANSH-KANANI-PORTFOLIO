@@ -1,23 +1,15 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 /**
  * POST /api/contact
  *
- * Server-side handler that validates the incoming contact form data and
- * appends a row to the configured Google Sheet via the Sheets API.
+ * Validates the incoming contact form data and sends an email
+ * to mitanshkanani@outlook.com via the Resend API.
  *
- * REQUIRED environment variables (in .env.local):
- *   GOOGLE_SERVICE_ACCOUNT_EMAIL  — the service account email
- *   GOOGLE_PRIVATE_KEY            — the PEM private key (with escaped newlines)
- *
- * The Google Sheet must share editor access with the service account email.
- *
- * Target spreadsheet ID (from the URL provided):
- *   1O3XtxJnc3Nc11xG25UYzWMOzNlTVua1CDpoZ48mwIw4
+ * REQUIRED environment variable (in .env.local):
+ *   RESEND_API_KEY — your Resend API key (starts with re_)
  */
-
-const SPREADSHEET_ID = "1O3XtxJnc3Nc11xG25UYzWMOzNlTVua1CDpoZ48mwIw4";
-const SHEET_RANGE = "Sheet1!A:D"; // Name, Email, Message, Timestamp
 
 export async function POST(request: Request) {
     try {
@@ -28,7 +20,7 @@ export async function POST(request: Request) {
             message?: string;
         };
 
-        // Server-side validation
+        // ── Server-side validation ──────────────────────────────────────
         if (!name?.trim() || !email?.trim() || !message?.trim()) {
             return NextResponse.json(
                 { error: "All fields (name, email, message) are required." },
@@ -43,45 +35,68 @@ export async function POST(request: Request) {
             );
         }
 
-        // Check for required environment variables
-        const serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-        const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+        // ── Check for API key ───────────────────────────────────────────
+        const apiKey = process.env.RESEND_API_KEY || process.env.RESENDAPIKEY;
 
-        if (!serviceAccountEmail || !privateKey) {
-            console.warn(
-                "[Contact API] Missing Google Sheets credentials. " +
-                "Set GOOGLE_SERVICE_ACCOUNT_EMAIL and GOOGLE_PRIVATE_KEY in .env.local"
+        if (!apiKey) {
+            console.error(
+                "[Contact API] Missing RESEND_API_KEY. " +
+                    "Add it to .env.local to enable the contact form."
             );
             return NextResponse.json(
                 {
                     error:
                         "Contact form is not yet configured. Please reach out via email at mitanshkanani@outlook.com.",
                 },
-                { status: 503 }
+                { status: 500 }
             );
         }
 
-        // Dynamically import googleapis only when credentials are available
-        const { google } = await import("googleapis");
+        // ── Send email via Resend ───────────────────────────────────────
+        const resend = new Resend(apiKey);
 
-        const auth = new google.auth.JWT({
-            email: serviceAccountEmail,
-            key: privateKey.replace(/\\n/g, "\n"),
-            scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+        const { error } = await resend.emails.send({
+            from: "Mitansh Portfolio <onboarding@resend.dev>",
+            to: "mitanshkanani@outlook.com",
+            subject: `New Contact Message from ${name.trim()}`,
+            html: `
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; color: #1a1a1a;">
+                    <h2 style="margin: 0 0 24px; font-size: 20px; font-weight: 600; color: #111;">
+                        New message from your portfolio
+                    </h2>
+
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+                        <tr>
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; font-size: 13px; color: #666; width: 80px; vertical-align: top;">Name</td>
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; font-size: 15px; font-weight: 500;">${name.trim()}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; font-size: 13px; color: #666; vertical-align: top;">Email</td>
+                            <td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5; font-size: 15px;">
+                                <a href="mailto:${email.trim()}" style="color: #2563eb; text-decoration: none;">${email.trim()}</a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div style="padding: 16px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e5e5;">
+                        <p style="margin: 0 0 4px; font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em;">Message</p>
+                        <p style="margin: 0; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${message.trim()}</p>
+                    </div>
+
+                    <p style="margin-top: 24px; font-size: 12px; color: #999;">
+                        Sent via the portfolio contact form · ${new Date().toISOString()}
+                    </p>
+                </div>
+            `,
         });
 
-        const sheets = google.sheets({ version: "v4", auth });
-
-        const timestamp = new Date().toISOString();
-
-        await sheets.spreadsheets.values.append({
-            spreadsheetId: SPREADSHEET_ID,
-            range: SHEET_RANGE,
-            valueInputOption: "USER_ENTERED",
-            requestBody: {
-                values: [[name.trim(), email.trim(), message.trim(), timestamp]],
-            },
-        });
+        if (error) {
+            console.error("[Contact API] Resend error:", error);
+            return NextResponse.json(
+                { error: "Failed to send message. Please try again later." },
+                { status: 500 }
+            );
+        }
 
         return NextResponse.json(
             { message: "Message sent successfully! I'll get back to you soon." },
