@@ -141,6 +141,13 @@
     @apply font-sans;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
+    /*
+     * Guard against sub-pixel / decorative-glow horizontal overflow on small
+     * viewports. `clip` (not `hidden`) is used deliberately: it prevents a
+     * horizontal scrollbar without creating a scroll container, so the sticky
+     * navbar and smooth in-page scrolling keep working.
+     */
+    overflow-x: clip;
   }
 
   ::selection {

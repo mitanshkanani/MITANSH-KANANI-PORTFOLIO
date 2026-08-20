@@ -4,6 +4,7 @@ import { BrowserFrame } from "@/components/projects/browser-frame";
 import { LiveIframePreview } from "@/components/projects/live-iframe-preview";
 import { GocoIdePreview } from "@/components/projects/goco-ide-preview";
 import { CodePreview, TerminalPreview } from "@/components/projects/code-preview";
+import { PipelinePreview } from "@/components/projects/pipeline-preview";
 import type { Project } from "@/lib/projects";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +36,8 @@ export function ProjectPreview({
                 <LiveIframePreview url={preview.url} title={title} />
             ) : preview.kind === "goco-ide" ? (
                 <GocoIdePreview />
+            ) : preview.kind === "pipeline" ? (
+                <PipelinePreview />
             ) : preview.kind === "terminal" ? (
                 <TerminalPreview />
             ) : (

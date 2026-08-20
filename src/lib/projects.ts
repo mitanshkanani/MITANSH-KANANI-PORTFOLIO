@@ -18,7 +18,7 @@ import {
 
 export type ProjectStatus = "shipped" | "completed" | "ongoing" | "research" | "coming-soon";
 
-export type PreviewKind = "iframe" | "goco-ide" | "code" | "terminal";
+export type PreviewKind = "iframe" | "goco-ide" | "code" | "terminal" | "pipeline";
 
 export type ProjectCategory =
     | "Developer Tools"
@@ -110,6 +110,62 @@ export const projects: Project[] = [
         accent: "oklch(0.7 0.15 55)",
     },
     {
+        slug: "cnn-shape-classification",
+        title: "CNN Shape Classification",
+        tagline: "A convolutional neural network implemented from scratch in pure Java — zero ML frameworks.",
+        description:
+            "A from-scratch CNN in pure Java — no deep-learning framework — with every layer (Convolution, ReLU, MaxPooling, Flatten, Fully Connected) and both forward and backward propagation written by hand. Trained on 500+ generated images using gradient descent optimization, achieving 90%+ accuracy on triangle-vs-square recognition. Exposed through a Spring Boot REST API for real-time shape prediction via image upload.",
+        highlights: [
+            "Implemented complete CNN layers — Convolution, ReLU, MaxPooling, Flatten and Fully Connected — with custom forward and backward propagation in pure Java.",
+            "Achieved 90%+ accuracy on triangle-vs-square recognition via automatic training on 500+ generated images with gradient-descent optimization.",
+            "Built a Spring Boot REST API (@RestController, @Service, @PostMapping) accepting image uploads and returning real-time shape predictions with probability scores in JSON.",
+        ],
+        role: "Author",
+        timeframe: "Sep 2025 – Oct 2025",
+        status: "completed",
+        category: "AI / ML",
+        technologies: ["Java", "Spring Boot", "CNN"],
+        metrics: [
+            { value: "90%+", label: "accuracy" },
+            { value: "500+", label: "training images" },
+            { value: "0", label: "ML frameworks used" },
+        ],
+        featured: true,
+        preview: { kind: "code" },
+        githubUrl: "https://github.com/mitanshkanani/JavaCNNShaper",
+        icon: Cpu,
+        accent: "oklch(0.68 0.15 25)",
+    },
+    {
+        slug: "ml-java-pipeline",
+        title: "ML-Java-Pipeline",
+        tagline:
+            "A Java CLI that turns raw CSVs into model-ready data — built to remove repetitive ML preprocessing.",
+        description:
+            "An in-progress Java command-line ML pipeline (Maven, JLine) for small-to-medium projects, designed to reduce repetitive manual preprocessing. The intended flow is: select a dataset, inspect it, choose columns interactively, run automated preprocessing, then pick an ML task and model to train and evaluate. Dataset selection, inspection, interactive column selection, and the first preprocessing stage (null analysis + column removal with saved output) are working today; task selection, model selection, and training/evaluation are still being built.",
+        highlights: [
+            "Interactive CLI built with JLine — arrow-key dataset selection that scans the local data/ folder using a raw-mode terminal renderer.",
+            "Dataset inspection previews columns and rows and reports null values per column (and in total) to guide cleaning decisions.",
+            "Arrow-key column selector (toggle + proceed) feeds an automated preprocessing step that removes selected columns and writes the processed CSV back to the repo's data/ output path.",
+            "Designed to reduce repetitive manual ML preparation work by approximately 80% (a design objective, not a measured result) — task selection, model selection, and evaluation are in active development.",
+        ],
+        role: "Author",
+        timeframe: "2025 – Present",
+        status: "ongoing",
+        category: "AI / ML",
+        technologies: ["Java", "Maven", "JLine"],
+        metrics: [
+            { value: "~80%", label: "manual prep reduction (goal)" },
+            { value: "4 / 7", label: "pipeline stages built" },
+            { value: "WIP", label: "task · model · eval" },
+        ],
+        featured: true,
+        preview: { kind: "pipeline" },
+        githubUrl: "https://github.com/mitanshkanani/ML-JAVA-PIPELINE",
+        icon: Boxes,
+        accent: "oklch(0.7 0.13 60)",
+    },
+    {
         slug: "moneyoverflow",
         title: "MoneyOverflow",
         tagline: "AI-assisted financial literacy platform with a full learning ecosystem.",
@@ -178,60 +234,7 @@ export const projects: Project[] = [
         icon: ShieldCheck,
         accent: "oklch(0.68 0.15 280)",
     },
-    {
-        slug: "ml-java-pipeline",
-        title: "ML-Java-Pipeline",
-        tagline: "Machine learning in Java. A complete ML pipeline — from dataset to output.",
-        description:
-            "An in-progress engineering pipeline in pure Java with Maven. The goal: reduce ~80% of repetitive human work in ML workflows. Select a dataset, pass it through preprocessing, and the pipeline handles the remaining stages automatically — from ingestion to model-ready output.",
-        highlights: [
-            "Building a full ML pipeline in pure Java (Maven) — dataset selection → preprocessing → automated pipeline stages → output.",
-            "Designed to eliminate ~80% of repetitive manual ML preparation and pipeline assembly work.",
-            "Implemented command-line dataset selector and CSV ingestion as foundation milestones; preprocessing stage actively under development.",
-        ],
-        role: "Author",
-        timeframe: "2025 – Present",
-        status: "ongoing",
-        category: "AI / ML",
-        technologies: ["Java", "Maven"],
-        metrics: [
-            { value: "~80%", label: "manual work reduction (goal)" },
-            { value: "100%", label: "Java" },
-            { value: "WIP", label: "pipeline stages" },
-        ],
-        featured: false,
-        preview: { kind: "terminal" },
-        githubUrl: "https://github.com/mitanshkanani/ML-JAVA-PIPELINE",
-        icon: Boxes,
-        accent: "oklch(0.7 0.13 60)",
-    },
-    {
-        slug: "cnn-shape-classification",
-        title: "CNN Shape Classification",
-        tagline: "A convolutional neural network implemented from scratch in pure Java — zero ML frameworks.",
-        description:
-            "A from-scratch CNN in pure Java — no deep-learning framework — with every layer (Convolution, ReLU, MaxPooling, Flatten, Fully Connected) and both forward and backward propagation written by hand. Trained on 500+ generated images using gradient descent optimization, achieving 90%+ accuracy on triangle-vs-square recognition. Exposed through a Spring Boot REST API for real-time shape prediction via image upload.",
-        highlights: [
-            "Implemented complete CNN layers — Convolution, ReLU, MaxPooling, Flatten and Fully Connected — with custom forward and backward propagation in pure Java.",
-            "Achieved 90%+ accuracy on triangle-vs-square recognition via automatic training on 500+ generated images with gradient-descent optimization.",
-            "Built a Spring Boot REST API (@RestController, @Service, @PostMapping) accepting image uploads and returning real-time shape predictions with probability scores in JSON.",
-        ],
-        role: "Author",
-        timeframe: "Sep 2025 – Oct 2025",
-        status: "completed",
-        category: "AI / ML",
-        technologies: ["Java", "Spring Boot", "CNN"],
-        metrics: [
-            { value: "90%+", label: "accuracy" },
-            { value: "500+", label: "training images" },
-            { value: "0", label: "ML frameworks used" },
-        ],
-        featured: true,
-        preview: { kind: "code" },
-        githubUrl: "https://github.com/mitanshkanani/JavaCNNShaper",
-        icon: Cpu,
-        accent: "oklch(0.68 0.15 25)",
-    },
+
     {
         slug: "nurturenest",
         title: "NurtureNest",
