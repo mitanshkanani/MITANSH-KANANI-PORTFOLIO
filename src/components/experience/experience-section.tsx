@@ -26,7 +26,7 @@ function TimelineCard({
 
     return (
         <Reveal delay={index * 0.1} className="relative">
-            <div className="flex gap-4 sm:gap-6 lg:gap-8">
+            <div className="flex gap-5 sm:gap-6 lg:gap-8">
                 {/* Timeline spine */}
                 <div className="relative flex flex-col items-center">
                     {/* Dot */}
@@ -93,7 +93,7 @@ function TimelineCard({
                             <motion.div
                                 animate={{ rotate: expanded ? 180 : 0 }}
                                 transition={{ duration: 0.3, ease: EASE }}
-                                className="shrink-0 text-muted-foreground"
+                                className="-mr-1.5 -mt-1.5 shrink-0 rounded-full p-1.5 text-muted-foreground transition-colors group-hover:text-foreground"
                             >
                                 <ChevronDown className="size-5" />
                             </motion.div>
@@ -132,7 +132,7 @@ function TimelineCard({
                                         </p>
 
                                         {/* Highlights */}
-                                        <ul className="mt-4 space-y-2.5">
+                                        <ul className="mt-4 space-y-3">
                                             {experience.highlights.map((h, i) => (
                                                 <li
                                                     key={i}

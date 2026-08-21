@@ -619,11 +619,11 @@ export function AboutSection() {
                     <Reveal delay={0.05}>
                         <h1
                             id="about-heading"
-                            className="mt-6 max-w-4xl font-heading text-4xl font-semibold leading-[1.15] tracking-tight text-foreground sm:text-6xl lg:text-7xl"
+                            className="mt-6 max-w-4xl font-heading text-3xl font-semibold leading-[1.15] tracking-tight text-foreground sm:text-6xl lg:text-7xl"
                         >
                             Mitansh Kanani.
                         </h1>
-                        <div className="mt-2 max-w-4xl font-heading text-4xl font-semibold leading-[1.15] tracking-tight sm:text-6xl lg:text-7xl">
+                        <div className="mt-2 max-w-4xl font-heading text-3xl font-semibold leading-[1.15] tracking-tight sm:text-6xl lg:text-7xl">
                             <RotatingTitle />
                         </div>
                     </Reveal>

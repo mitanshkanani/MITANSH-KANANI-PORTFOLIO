@@ -139,9 +139,10 @@ export function ContactSection() {
             className="relative py-20 sm:py-28"
         >
             {/* Background glow */}
-            <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-                <div className="absolute left-1/2 bottom-0 h-[30rem] w-[50rem] -translate-x-1/2 rounded-full bg-brand/6 blur-[120px]" />
+            <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                <div className="absolute left-1/2 bottom-0 h-[30rem] w-[50rem] max-w-full -translate-x-1/2 rounded-full bg-brand/6 blur-[120px]" />
             </div>
+
 
             <div className="mx-auto max-w-6xl px-5 sm:px-8">
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">

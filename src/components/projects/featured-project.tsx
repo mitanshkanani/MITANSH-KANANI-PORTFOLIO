@@ -49,8 +49,9 @@ export function FeaturedProject({
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative"
+                    className="relative min-w-0"
                 >
+
                     {/* Soft accent glow behind the frame */}
                     <div
                         aria-hidden
@@ -70,7 +71,8 @@ export function FeaturedProject({
                 </motion.div>
 
                 {/* Narrative side */}
-                <div className="flex flex-col">
+                <div className="flex min-w-0 flex-col">
+
                     <div className="flex items-center justify-between gap-4">
                         <SectionLabel index={index}>{project.category}</SectionLabel>
                         <StatusBadge status={project.status} />
