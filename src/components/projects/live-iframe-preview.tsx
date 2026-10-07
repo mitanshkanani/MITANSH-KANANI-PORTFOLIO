@@ -16,10 +16,13 @@ export function LiveIframePreview({
     url,
     title,
     className,
+    timeoutMs = 8000,
 }: {
     url: string;
     title: string;
     className?: string;
+    /** Time to wait for the frame to load before assuming it was blocked. */
+    timeoutMs?: number;
 }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [inView, setInView] = useState(false);
@@ -49,9 +52,9 @@ export function LiveIframePreview({
         if (!inView || loaded) return;
         const timeout = setTimeout(() => {
             if (!loaded) setFailed(true);
-        }, 8000);
+        }, timeoutMs);
         return () => clearTimeout(timeout);
-    }, [inView, loaded]);
+    }, [inView, loaded, timeoutMs]);
 
     return (
         <div ref={containerRef} className={cn("absolute inset-0", className)}>

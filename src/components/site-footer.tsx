@@ -6,6 +6,7 @@ import {
     GithubIcon,
     LinkedinIcon,
     LeetcodeIcon,
+    KaggleIcon,
 } from "@/components/brand-icons";
 
 /**
@@ -19,6 +20,7 @@ const links = [
     { label: "GitHub", href: socialLinks.github, Icon: GithubIcon },
     { label: "LinkedIn", href: socialLinks.linkedin, Icon: LinkedinIcon },
     { label: "LeetCode", href: socialLinks.leetcode, Icon: LeetcodeIcon },
+    { label: "Kaggle", href: socialLinks.kaggle, Icon: KaggleIcon },
 ];
 
 function scrollTo(id: string) {

@@ -1,9 +1,9 @@
 import type { LucideIcon } from "lucide-react";
 import {
-    Boxes,
     BrainCircuit,
     Cpu,
     HeartHandshake,
+    Landmark,
     ShieldCheck,
     Terminal,
 } from "lucide-react";
@@ -18,7 +18,7 @@ import {
 
 export type ProjectStatus = "shipped" | "completed" | "ongoing" | "research" | "coming-soon";
 
-export type PreviewKind = "iframe" | "goco-ide" | "code" | "terminal" | "pipeline";
+export type PreviewKind = "iframe" | "goco-ide" | "code";
 
 export type ProjectCategory =
     | "Developer Tools"
@@ -62,6 +62,8 @@ export interface Project {
         url?: string;
         /** Whether the site was verified to allow iframe embedding. */
         embeddable?: boolean;
+        /** How long to wait before assuming the frame was blocked (slow cold starts). */
+        timeoutMs?: number;
     };
     liveUrl?: string;
     githubUrl?: string;
@@ -110,6 +112,41 @@ export const projects: Project[] = [
         accent: "oklch(0.7 0.15 55)",
     },
     {
+        slug: "ai-credit-risk",
+        title: "AI Credit Risk & Loan Approval Engine",
+        tagline: "An end-to-end credit-risk engine that turns a loan application into an explainable approve / review / decline decision.",
+        description:
+            "Built on 1.35M resolved LendingClub loans, the engine estimates each applicant's probability of default and wraps it in a decision layer — risk bands, approve/review/decline thresholds, expected loss and SHAP reason codes. The model never sees LendingClub's own grade or rate, yet out-ranks LendingClub's pricing on a sealed out-of-time test set. Deployed as a FastAPI + Docker web app.",
+        highlights: [
+            "Audited all 151 columns for data leakage, used an out-of-time train/validation/test split, and verified the fitted preprocessing pipeline with 72 automated audits.",
+            "Benchmarked 5 models (baseline → Logistic Regression → Random Forest → LightGBM → XGBoost) and shipped a monotonic, calibrated LightGBM: ROC-AUC 0.746 vs 0.715 for LendingClub's own pricing on a sealed 212,801-loan test set.",
+            "Decision layer with risk bands, expected loss (PD × EAD × LGD) and SHAP reason codes — approved loans defaulted at 11.6% vs 20.1%, cutting loss per dollar lent from 13.6% to 6.2%.",
+            "Deployed with a checksummed model bundle; removed zip code after a fairness ablation and added audit-driven guardrails (out-of-scope referral, affordability rules, strict input validation).",
+        ],
+        role: "Author",
+        timeframe: "Sep 2026 – Oct 2026",
+        status: "shipped",
+        category: "AI / ML",
+        technologies: ["Python", "LightGBM", "SHAP", "FastAPI", "Docker"],
+        metrics: [
+            { value: "0.746", label: "test ROC-AUC" },
+            { value: "1.35M", label: "loans modelled" },
+            { value: "72", label: "automated audits" },
+        ],
+        featured: true,
+        // Hosted on Render's free tier — a cold start can take ~50s, so wait longer than the default.
+        preview: {
+            kind: "iframe",
+            url: "https://credit-risk-engine-dhib.onrender.com",
+            embeddable: true,
+            timeoutMs: 75000,
+        },
+        liveUrl: "https://credit-risk-engine-dhib.onrender.com",
+        githubUrl: "https://github.com/mitanshkanani/AI-Credit-Risk-Loan-Approval-Engine",
+        icon: Landmark,
+        accent: "oklch(0.7 0.13 200)",
+    },
+    {
         slug: "cnn-shape-classification",
         title: "CNN Shape Classification",
         tagline: "A convolutional neural network implemented from scratch in pure Java — zero ML frameworks.",
@@ -135,35 +172,6 @@ export const projects: Project[] = [
         githubUrl: "https://github.com/mitanshkanani/JavaCNNShaper",
         icon: Cpu,
         accent: "oklch(0.68 0.15 25)",
-    },
-    {
-        slug: "ml-java-pipeline",
-        title: "ML-Java-Pipeline",
-        tagline:
-            "A Java CLI that turns raw CSVs into model-ready data — built to remove repetitive ML preprocessing.",
-        description:
-            "An in-progress Java command-line ML pipeline (Maven, JLine) for small-to-medium projects, designed to reduce repetitive manual preprocessing. The intended flow is: select a dataset, inspect it, choose columns interactively, run automated preprocessing, then pick an ML task and model to train and evaluate. Dataset selection, inspection, interactive column selection, and the first preprocessing stage (null analysis + column removal with saved output) are working today; task selection, model selection, and training/evaluation are still being built.",
-        highlights: [
-            "Interactive CLI built with JLine — arrow-key dataset selection that scans the local data/ folder using a raw-mode terminal renderer.",
-            "Dataset inspection previews columns and rows and reports null values per column (and in total) to guide cleaning decisions.",
-            "Arrow-key column selector (toggle + proceed) feeds an automated preprocessing step that removes selected columns and writes the processed CSV back to the repo's data/ output path.",
-            "Designed to reduce repetitive manual ML preparation work by approximately 80% (a design objective, not a measured result) — task selection, model selection, and evaluation are in active development.",
-        ],
-        role: "Author",
-        timeframe: "2025 – Present",
-        status: "ongoing",
-        category: "AI / ML",
-        technologies: ["Java", "Maven", "JLine"],
-        metrics: [
-            { value: "~80%", label: "manual prep reduction (goal)" },
-            { value: "4 / 7", label: "pipeline stages built" },
-            { value: "WIP", label: "task · model · eval" },
-        ],
-        featured: true,
-        preview: { kind: "pipeline" },
-        githubUrl: "https://github.com/mitanshkanani/ML-JAVA-PIPELINE",
-        icon: Boxes,
-        accent: "oklch(0.7 0.13 60)",
     },
     {
         slug: "moneyoverflow",
@@ -276,6 +284,7 @@ export const socialLinks = {
     github: "https://github.com/mitanshkanani",
     linkedin: "https://www.linkedin.com/in/mitansh-kanani-9a80812b6/",
     leetcode: "https://leetcode.com/u/Altair2004/",
+    kaggle: "https://www.kaggle.com/mitanshkanani",
     email: "mailto:mitanshkanani@outlook.com",
 };
 

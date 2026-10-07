@@ -6,7 +6,12 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { socialLinks } from "@/lib/projects";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { GithubIcon, LinkedinIcon, LeetcodeIcon } from "@/components/brand-icons";
+import {
+    GithubIcon,
+    LinkedinIcon,
+    LeetcodeIcon,
+    KaggleIcon,
+} from "@/components/brand-icons";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { EASE } from "@/components/motion-primitives";
 
@@ -29,6 +34,7 @@ const SOCIALS = [
     { label: "GitHub", href: socialLinks.github, Icon: GithubIcon },
     { label: "LinkedIn", href: socialLinks.linkedin, Icon: LinkedinIcon },
     { label: "LeetCode", href: socialLinks.leetcode, Icon: LeetcodeIcon },
+    { label: "Kaggle", href: socialLinks.kaggle, Icon: KaggleIcon },
 ];
 
 export function SiteHeader() {
